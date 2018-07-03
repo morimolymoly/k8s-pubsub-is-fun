@@ -1,0 +1,17 @@
+version: '2'
+services:
+  pubsub-is-fun:
+    container_name: pubsub-is-fun
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ".:/go/src/github.com/morimolymoly/pubsub-is-fun"
+    environment:
+      - PUBSUB_EMULATOR_HOST=gcp-pubsub-emulator:8538
+      - DATASTORE_PROJECT_ID=my-project-id
+    command: go run /go/src/github.com/morimolymoly/pubsub-is-fun/src/pubsub-is-fun/main.go
+networks:
+    default:
+        external:
+            name: gcp-network

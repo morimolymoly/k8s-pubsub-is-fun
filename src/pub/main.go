@@ -7,34 +7,22 @@ import (
 	"golang.org/x/net/context"
 )
 
+const topicName string = "message2"
+const projectID string = "my-project-id"
+const subID string = "message-sub"
+
 func main() {
 	ctx := context.Background()
 
-	// Sets your Google Cloud Platform project ID.
-	projectID := "my-project-id"
-
-	// Creates a client.
 	client, err := pubsub.NewClient(ctx, projectID)
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)
 	}
 
-	// Sets the name for the new topic.
-	topicName := "message2"
-
-	// Creates the new topic.
-	topic, err := client.CreateTopic(ctx, topicName)
-	if err != nil {
-		log.Fatalf("Failed to create topic: %v", err)
-	}
-
+	topic := CreateTopicIfNotExist(client)
 	log.Printf("Topic %v created.\n", topic)
 
-	_, err = client.CreateSubscription(ctx, "message-sub",
-		pubsub.SubscriptionConfig{Topic: topic})
-	if err != nil {
-		log.Fatalf("Failed to Create Subscription: %v", err)
-	}
+	CreateSubscriptionIfNotExist(client, topic)
 	log.Print("Subscription was created.\n")
 
 	// Publish Message
@@ -51,4 +39,42 @@ func main() {
 		log.Fatalf("Failed to publish message: %v", err)
 	}
 	log.Printf("Message %v sent.\n", msg2)
+}
+
+// CreateTopicIfNotExist ...
+func CreateTopicIfNotExist(c *pubsub.Client) *pubsub.Topic {
+	ctx := context.Background()
+	topic := c.Topic(topicName)
+	ok, err := topic.Exists(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if ok {
+		return topic
+	}
+
+	topic, err = c.CreateTopic(ctx, topicName)
+	if err != nil {
+		log.Fatal("Failed to create topic")
+	}
+	return topic
+}
+
+// CreateSubscriptionIfNotExist ...
+func CreateSubscriptionIfNotExist(c *pubsub.Client, topic *pubsub.Topic) *pubsub.Subscription {
+	ctx := context.Background()
+	sub := c.Subscription(subID)
+	ok, err := sub.Exists(ctx)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if ok {
+		return sub
+	}
+
+	sub, err = c.CreateSubscription(ctx, subID, pubsub.SubscriptionConfig{Topic: topic})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return sub
 }

@@ -22,8 +22,7 @@ services:
       - PUBSUB_EMULATOR_HOST=gcp-pubsub-emulator:8538
       - DATASTORE_PROJECT_ID=my-project-id
     command: go run /go/src/github.com/morimolymoly/pubsub-is-fun/src/sub/main.go
-    depends_on:
-      - pub
+
 networks:
     default:
         external:

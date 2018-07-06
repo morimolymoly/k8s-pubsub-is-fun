@@ -9,9 +9,11 @@ import (
 	"google.golang.org/api/iterator"
 )
 
+const projectID string = "my-project-id"
+const subID string = "message-sub"
+
 func main() {
 	ctx := context.Background()
-	projectID := "my-project-id"
 	log.Print("SUBSUBSUB")
 	client, err := pubsub.NewClient(ctx, projectID)
 	if err != nil {
@@ -22,11 +24,10 @@ func main() {
 		fmt.Println(sub)
 	}
 
-	const subID = "message-sub"
 	sub := client.Subscription(subID)
 	log.Println(sub)
 	err = sub.Receive(ctx, func(ctx context.Context, m *pubsub.Message) {
-		log.Println("GOT MESSSGE")
+		log.Printf("GOT MESSSGE %v\n", m)
 		m.Ack()
 	})
 }

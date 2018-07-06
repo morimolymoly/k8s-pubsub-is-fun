@@ -6,5 +6,8 @@ Check [this one](https://github.com/morimolymoly/gcp-emulators) out!
 ```
 dep ensure
 docker-compose build
-docker-compose up
+# publish messages
+docker-compose up pub
+# subscribe messages
+docker-compose up sub
 ```

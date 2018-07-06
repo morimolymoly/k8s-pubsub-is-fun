@@ -1,0 +1,7 @@
+FROM golang:latest
+
+ADD . /go/src/github.com/morimolymoly/pubsub-is-fun
+
+WORKDIR /go/src/github.com/morimolymoly/pubsub-is-fun
+RUN go install github.com/morimolymoly/pubsub-is-fun/src/sub
+CMD ["/go/bin/sub"]

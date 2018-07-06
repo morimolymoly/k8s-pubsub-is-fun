@@ -1,16 +1,29 @@
 version: '2'
 services:
-  pubsub-is-fun:
-    container_name: pubsub-is-fun
+  pub:
+    container_name: pub_pubsub
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: DockerfilePub
     volumes:
       - ".:/go/src/github.com/morimolymoly/pubsub-is-fun"
     environment:
       - PUBSUB_EMULATOR_HOST=gcp-pubsub-emulator:8538
       - DATASTORE_PROJECT_ID=my-project-id
-    command: go run /go/src/github.com/morimolymoly/pubsub-is-fun/src/pubsub-is-fun/main.go
+    command: go run /go/src/github.com/morimolymoly/pubsub-is-fun/src/pub/main.go
+  sub:
+    container_name: sub_pubsub
+    build:
+      context: .
+      dockerfile: DockerfileSub
+    volumes:
+      - ".:/go/src/github.com/morimolymoly/pubsub-is-fun"
+    environment:
+      - PUBSUB_EMULATOR_HOST=gcp-pubsub-emulator:8538
+      - DATASTORE_PROJECT_ID=my-project-id
+    command: go run /go/src/github.com/morimolymoly/pubsub-is-fun/src/sub/main.go
+    depends_on:
+      - pub
 networks:
     default:
         external:

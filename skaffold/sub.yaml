@@ -1,0 +1,11 @@
+apiVersion: skaffold/v1alpha2
+kind: Config
+build:
+  artifacts:
+  - imageName: localhost:5000/sub-pubsub
+    docker:
+      dockerfilePath: DockerfileSub
+deploy:
+  kubectl:
+    manifests:
+      - kubernetes/sub.yaml

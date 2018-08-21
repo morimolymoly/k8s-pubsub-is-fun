@@ -1,0 +1,20 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: pub-pubsub
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pub-pubsub
+    spec:
+      containers:
+      - name: pub-pubsub
+        image: localhost:5000/pub-pubsub
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: PUBSUB_EMULATOR_HOST
+            value: "pubsub-svc:8538"
+          - name: DATASTORE_PROJECT_ID
+            value: "my-project-id"

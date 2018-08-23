@@ -2,11 +2,10 @@
 
 ## k8s
 ### Requirements
-* [docker local registry](https://github.com/morimolymoly/repository-compose)
 * minikube
 * [gcp-emulator on k8s](https://github.com/morimolymoly/gcp-emulators)
 ### Usage
-First of all, you need to launch minikube and docker local registry!!
+First of all, you need to launch minikube and gcp-emulator!!
 ```
 # use minikube for kubectl
 make use-minikube

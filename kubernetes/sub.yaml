@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: sub-pubsub
-        image: localhost:5000/sub-pubsub
+        image: morimolymoly/sub-pubsub:dev
         imagePullPolicy: IfNotPresent
         env:
           - name: PUBSUB_EMULATOR_HOST

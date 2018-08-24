@@ -1,8 +1,11 @@
 apiVersion: skaffold/v1alpha2
 kind: Config
 build:
+  tagPolicy:
+    envTemplate:
+      template: "{{.IMAGE_NAME}}:dev"
   artifacts:
-  - imageName: localhost:5000/sub-pubsub
+  - imageName: morimolymoly/sub-pubsub
     docker:
       dockerfilePath: DockerfileSub
 deploy:
